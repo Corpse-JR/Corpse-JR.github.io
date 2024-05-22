@@ -1,37 +1,33 @@
-/* View in fullscreen */
-var elem = document.documentElement;
-function openFullscreen() {
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-        elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-        elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-        elem.msRequestFullscreen();
+var fullScreenCanvas= null;
+
+function fullScreenClick() {
+  console.log("--fullScreenClick--");
+  if (window.orientation === 90 || window.orientation === -90) {
+    console.log("--fullScreenClickLandscape--");
+    let documentBody = document.querySelector("body");
+    if (!document.fullscreenElement) {
+      documentBody.requestFullscreen();
+      console.log("--fullScreenClick--requestFullscreen--");
     }
+  } else {
+    console.log("--fullScreenClickPortrait--");
+  }
 }
 
-/* Close fullscreen */
-function closeFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.mozCancelFullScreen) { /* Firefox */
-        document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-        document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) { /* IE/Edge */
-        document.msExitFullscreen();
-    }
+function fullScreenGetCanvas() {
+  fullScreenCanvas= document.querySelector("canvas");
+  if (fullScreenCanvas=== null) {
+    console.log("--fullScreenCanvas--null--");
+    setTimeout(fullScreenGetCanvas, 1000);
+  } else {
+    console.log("--fullScreenCanvas--OK--");
+    fullScreenCanvas.addEventListener("touchstart", fullScreenClick);
+  }
 }
 
-function updateFullscreen() {
-    var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
-        (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
-        (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
-        (document.msFullscreenElement && document.msFullscreenElement !== null);
-    if (!isInFullScreen)
-        openFullscreen();
-    else
-        closeFullscreen();
+function fullScreenInit(event) {
+    console.log("--fullScreenInit--", event);
+    fullScreenGetCanvas();
 }
+
+window.addEventListener('load', fullScreenInit);
