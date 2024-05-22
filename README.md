@@ -1,1 +1,1 @@
-# Corpse-JR.github.io
+# Thou shall not name the website
